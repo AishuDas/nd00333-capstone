@@ -21,7 +21,7 @@ y_df = x_df.pop("blueWins")
 
 # TODO: Split data into train and test sets.
 
-x_train, x_test, y_train, y_test = train_test_split(x_df, y_df, test_size=0.3, random_state=123)
+x_train, x_test, y_train, y_test = train_test_split(x_df, y_df, test_size=0.3, random_state=42)
 
 def main():
     # Add arguments to script
@@ -29,19 +29,17 @@ def main():
 
     parser.add_argument('--C', type=float, default=1.0)
     parser.add_argument('--max_iter', type=int, default=100)
-    parser.add_argument('--penalty', type=str, default='elasticnet')
-    parser.add_argument('--l1_ratio', type=float, default=0.05)
     parser.add_argument('--n_jobs', type=int, default=1)
 
     args = parser.parse_args()
 
-    model = LogisticRegression(C=args.C, max_iter=args.max_iter, penalty=args.penalty, l1_ratio=args.l1_ratio, n_jobs=args.n_jobs).fit(x_train, y_train)
+    model = LogisticRegression(C=args.C, max_iter=args.max_iter, n_jobs=args.n_jobs).fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
     run.log("Accuracy", np.float(accuracy))
     run.log("Regularization:", np.float(args.C))
     run.log("Maximum Iterations:", np.int(args.max_iter))
-    pickle.dump(model, 'hyperDrive_{}_{}.pkl'.format(args.C,args.max_iter))
+    pickle.dump(model, open('hyperDrive_{}_{}_{}.pkl'.format(args.C,args.max_iter,args.n_jobs), 'wb'))
 
 if __name__ == '__main__':
     main()
