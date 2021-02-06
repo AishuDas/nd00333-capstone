@@ -18,27 +18,8 @@ from inference_schema.parameter_types.numpy_parameter_type import NumpyParameter
 from inference_schema.parameter_types.pandas_parameter_type import PandasParameterType
 
 
-input_sample = pd.DataFrame({"gameId": pd.Series([0.0], dtype="float64"), "blueWardsPlaced": pd.Series([0.0], dtype="float64"), 
-"blueWardsDestroyed": pd.Series([0.0], dtype="float64"), "blueFirstBlood": pd.Series([0.0], dtype="float64"), 
-"blueKills": pd.Series([0.0], dtype="float64"), "blueDeaths": pd.Series([0.0], dtype="float64"), "blueAssists": pd.Series([0.0], dtype="float64"), 
-"blueEliteMonsters": pd.Series([0.0], dtype="float64"), "blueDragons": pd.Series([0.0], dtype="float64"), 
-"blueHeralds": pd.Series([0.0], dtype="float64"), "blueTowersDestroyed": pd.Series([0.0], dtype="float64"), 
-"blueTotalGold": pd.Series([0.0], dtype="float64"), "blueAvgLevel": pd.Series([0.0], dtype="float64"), 
-"blueTotalExperience": pd.Series([0.0], dtype="float64"), "blueTotalMinionsKilled": pd.Series([0.0], dtype="float64"), 
-"blueTotalJungleMinionsKilled": pd.Series([0.0], dtype="float64"), "blueGoldDiff": pd.Series([0.0], dtype="float64"), 
-"blueExperienceDiff": pd.Series([0.0], dtype="float64"), "blueCSPerMin": pd.Series([0.0], dtype="float64"), 
-"blueGoldPerMin": pd.Series([0.0], dtype="float64"), "redWardsPlaced": pd.Series([0.0], dtype="float64"), 
-"redWardsDestroyed": pd.Series([0.0], dtype="float64"), "redFirstBlood": pd.Series([0.0], dtype="float64"), 
-"redKills": pd.Series([0.0], dtype="float64"), "redDeaths": pd.Series([0.0], dtype="float64"), "redAssists": pd.Series([0.0], dtype="float64"), 
-"redEliteMonsters": pd.Series([0.0], dtype="float64"), "redDragons": pd.Series([0.0], dtype="float64"), "redHeralds": pd.Series([0.0], dtype="float64"), 
-"redTowersDestroyed": pd.Series([0.0], dtype="float64"), "redTotalGold": pd.Series([0.0], dtype="float64"), 
-"redAvgLevel": pd.Series([0.0], dtype="float64"), "redTotalExperience": pd.Series([0.0], dtype="float64"), 
-"redTotalMinionsKilled": pd.Series([0.0], dtype="float64"), "redTotalJungleMinionsKilled": pd.Series([0.0], dtype="float64"), 
-"redGoldDiff": pd.Series([0.0], dtype="float64"), "redExperienceDiff": pd.Series([0.0], dtype="float64"), 
-"redCSPerMin": pd.Series([0.0], dtype="float64"), "redGoldPerMin": pd.Series([0.0], dtype="float64")})
-
+input_sample = pd.DataFrame({"gameId": pd.Series([0], dtype="int64"), "blueWardsPlaced": pd.Series([0], dtype="int64"), "blueWardsDestroyed": pd.Series([0], dtype="int64"), "blueFirstBlood": pd.Series([0], dtype="int64"), "blueKills": pd.Series([0], dtype="int64"), "blueDeaths": pd.Series([0], dtype="int64"), "blueAssists": pd.Series([0], dtype="int64"), "blueEliteMonsters": pd.Series([0], dtype="int64"), "blueDragons": pd.Series([0], dtype="int64"), "blueHeralds": pd.Series([0], dtype="int64"), "blueTowersDestroyed": pd.Series([0], dtype="int64"), "blueTotalGold": pd.Series([0], dtype="int64"), "blueAvgLevel": pd.Series([0.0], dtype="float64"), "blueTotalExperience": pd.Series([0], dtype="int64"), "blueTotalMinionsKilled": pd.Series([0], dtype="int64"), "blueTotalJungleMinionsKilled": pd.Series([0], dtype="int64"), "blueGoldDiff": pd.Series([0], dtype="int64"), "blueExperienceDiff": pd.Series([0], dtype="int64"), "blueCSPerMin": pd.Series([0.0], dtype="float64"), "blueGoldPerMin": pd.Series([0.0], dtype="float64"), "redWardsPlaced": pd.Series([0], dtype="int64"), "redWardsDestroyed": pd.Series([0], dtype="int64"), "redFirstBlood": pd.Series([0], dtype="int64"), "redKills": pd.Series([0], dtype="int64"), "redDeaths": pd.Series([0], dtype="int64"), "redAssists": pd.Series([0], dtype="int64"), "redEliteMonsters": pd.Series([0], dtype="int64"), "redDragons": pd.Series([0], dtype="int64"), "redHeralds": pd.Series([0], dtype="int64"), "redTowersDestroyed": pd.Series([0], dtype="int64"), "redTotalGold": pd.Series([0], dtype="int64"), "redAvgLevel": pd.Series([0.0], dtype="float64"), "redTotalExperience": pd.Series([0], dtype="int64"), "redTotalMinionsKilled": pd.Series([0], dtype="int64"), "redTotalJungleMinionsKilled": pd.Series([0], dtype="int64"), "redGoldDiff": pd.Series([0], dtype="int64"), "redExperienceDiff": pd.Series([0], dtype="int64"), "redCSPerMin": pd.Series([0.0], dtype="float64"), "redGoldPerMin": pd.Series([0.0], dtype="float64")})
 output_sample = np.array([0])
-
 try:
     log_server.enable_telemetry(INSTRUMENTATION_KEY)
     log_server.set_verbosity('INFO')
@@ -54,7 +35,7 @@ def init():
     model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'model.pkl')
     path = os.path.normpath(model_path)
     path_split = path.split(os.sep)
-    log_server.update_custom_dimensions({'model_name': path_split[1], 'model_version': path_split[2]})
+    log_server.update_custom_dimensions({'model_name': path_split[-3], 'model_version': path_split[-2]})
     try:
         logger.info("Loading model from path.")
         model = joblib.load(model_path)
